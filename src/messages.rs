@@ -15,12 +15,13 @@ pub mod msg {
         result
     }
 
-    pub fn s_send_strings(socket: &zmq::Socket, messages: Vec<&str>) -> zmq::Result<()> {
+    pub fn s_send_strings(socket: &zmq::Socket, messages: &Vec<&str>) -> zmq::Result<()> {
         let mut result = zmq::Result::Ok(());
         for (i, message) in messages.iter().enumerate() {
-            let flag = match messages.len() - 1_usize {
-                i => 0,
-               _ => zmq::SNDMORE,
+            let flag = if i == messages.len() - 1_usize {
+                0
+            } else {
+                zmq::SNDMORE
             };
             if let zmq::Result::Err(e) = socket.send(message, flag) {
                 result = zmq::Result::Err(e);

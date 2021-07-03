@@ -19,12 +19,14 @@ fn main() {
     assert!(responder.bind("tcp://*:5555").is_ok());
 
     // let mut msg = zmq::Message::new();
+    let multi_part_message = vec!("Multi", "part", "message", "world");
     loop {
         //responder.recv(&mut msg, 0).unwrap();
         let message = msg::s_recv_string(&responder).unwrap();
         println!("Received {}", message.as_str().unwrap());
         thread::sleep(Duration::from_millis(1000));
         // responder.send("World", 0).unwrap();
-        msg::s_send_string(&responder, "Hello").expect("Failed to send message");
+        // msg::s_send_string(&responder, "World").expect("Failed to send message");
+        msg::s_send_strings(&responder, &multi_part_message).expect("Failed to send message");
     }
 }
