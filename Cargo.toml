@@ -1,5 +1,5 @@
 [package]
-name = "zmq_hello"
+name = "zmq_book"
 version = "0.1.0"
 edition = "2018"
 

@@ -1,4 +1,4 @@
-#![crate_name = "zmq_hello"]
+#![crate_name = "zmq_book"]
 
 //! Hello World server in Rust
 //! Binds REP socket to tcp://*:5555
