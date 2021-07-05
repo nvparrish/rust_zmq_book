@@ -7,3 +7,5 @@ edition = "2018"
 
 [dependencies]
 zmq = "0.9"
+rand = "0.8.4"
+nix = "0.21.0"

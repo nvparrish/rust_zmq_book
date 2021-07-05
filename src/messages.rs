@@ -34,4 +34,16 @@ pub mod msg {
         }
         result
     }
+
+    pub fn s_recv_strings(socket: &zmq::Socket) -> zmq::Result<Vec<zmq::Message>> {
+        let mut messages = Vec::<zmq::Message>::new();
+        let mut option = true;
+        while option {
+            let mut message= zmq::Message::new();
+            socket.recv(&mut message, 0)?;
+            messages.push(message);
+            option = socket.get_rcvmore()?;
+        }
+        Ok(messages)
+    }
 }
