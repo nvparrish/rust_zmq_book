@@ -15,6 +15,9 @@ use nix::unistd::{fork, ForkResult};
 use rand::Rng;
 use rand::distributions;
 
+/// Create a responder for the hello world example from the ZMQ Guide.  This one is modified to
+/// send a list of strings, however, for demonstrating the RECVMORE option.
+///
 fn responder() {
     let context = zmq::Context::new();
     let responder = context.socket(zmq::REP).unwrap();
@@ -31,6 +34,8 @@ fn responder() {
     }
 }
 
+/// Create a publisher for the weather server example from the ZMQ Guide
+///
 fn publisher() {
     let context = zmq::Context::new();
     let publisher = context.socket(zmq::PUB).unwrap();
@@ -54,12 +59,20 @@ fn publisher() {
     }
 }
 
-fn subscriber() -> zmq::Result<()>{
+/// Create a subscriber for the weather client example from the ZMQ Guide
+///
+/// # Arguments
+/// * `zipcode` The zipcode to subscribe to; the stream is filtered for updates starting with this
+///
+fn subscriber(zipcode: Option<&str>) -> zmq::Result<()>{
     let context = zmq::Context::new();
     let subscriber = context.socket(zmq::SUB).unwrap();
     subscriber.connect("tcp://localhost:5556");
 
-    let filter = "10001".as_bytes();
+    let filter = match zipcode {
+        Some(zip) => zip,
+        None => "10001",
+    }.as_bytes();
     subscriber.set_subscribe(filter);
 
     let mut total_temp = 0;
@@ -88,6 +101,8 @@ fn subscriber() -> zmq::Result<()>{
     Ok(())
 }
 
+/// The main function forkes a few processes to do some of the examples from the ZMQ Guide
+///
 fn main() {
     messages::msg::s_print_version();
 
