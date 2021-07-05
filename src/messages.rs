@@ -2,6 +2,11 @@ use zmq::Socket;
 use zmq;
 
 pub mod msg {
+    pub fn s_print_version() {
+        let (major, minor, patch) = zmq::version();
+        println!("The version of ZMQ is {}.{}.{}", major, minor, patch);
+    }
+
     pub fn s_send_string(socket: &zmq::Socket, message: &str) -> zmq::Result<()> {
         socket.send(message, 0)
     }

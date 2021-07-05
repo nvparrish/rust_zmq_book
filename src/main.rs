@@ -16,6 +16,8 @@ fn main() {
     let context = zmq::Context::new();
     let responder = context.socket(zmq::REP).unwrap();
 
+    messages::msg::s_print_version();
+
     assert!(responder.bind("tcp://*:5555").is_ok());
 
     // let mut msg = zmq::Message::new();
